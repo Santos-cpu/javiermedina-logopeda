@@ -1,0 +1,618 @@
+/* ==========================================================================
+   CONFIGURACIÓN GENERAL Y CONFIGURACIÓN DE REAJUSTE (RESET)
+   ========================================================================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    scroll-behavior: smooth;
+    font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: #3a3a3a;
+    line-height: 1.7;
+    background-color: #f2f9f9;
+    overflow-x: hidden;
+}
+
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px 0;
+}
+
+.container-wide {
+    max-width: 1250px;
+    margin: 0 auto;
+}
+
+/* ==========================================================================
+   CABECERA PRINCIPAL (FIJA Y ESTILO APPLE)
+   ========================================================================== */
+.site-header {
+    background-color: #f2f9f9;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+}
+
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 0;
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.logo a {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #000000;
+    text-decoration: none;
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease;
+    padding-bottom: 5px;
+}
+
+.logo a:hover {
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 8px;
+}
+
+.main-nav ul {
+    display: flex;
+    list-style: none;
+    gap: 30px;
+}
+
+.main-nav a {
+    font-family: 'Montserrat', sans-serif;
+    text-decoration: none;
+    color: #282727;
+    font-weight: bold;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    padding-bottom: 5px; 
+}
+
+.main-nav a:hover, 
+.main-nav a.active {
+    color: #568e9e;
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 8px;
+}
+
+.menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #333;
+}
+
+/* ==========================================================================
+   SECCIONES DE LA PÁGINA DE INICIO (INDEX.HTML)
+   ========================================================================== */
+
+.hero-section {
+    background-color: #84e2fe36; 
+    padding: 120px 0 40px 0;
+    text-align: center;
+    box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.06);
+}
+
+.hero-section h1 {
+    font-family: 'Montserrat', sans-serif; 
+    font-size: 2.5rem;
+    color: #000000;
+    font-weight: bold;
+    max-width: 100%;
+    margin: 0 auto;
+    letter-spacing: -0.2px;
+}
+
+@media (min-width: 1025px) {
+    .hero-section h1 { white-space: nowrap; }
+}
+
+.about-section {
+    background-color: #ffffff;
+    padding: 80px 0 100px 0;
+    box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.06);
+}
+
+.about-grid {
+    display: flex;
+    align-items: center;
+    gap: 80px;
+}
+
+.about-text { flex: 1; }
+
+.about-text h2 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 2.5rem;
+    margin-bottom: 25px;
+    color: #000000;
+    font-weight: bold;
+    letter-spacing: -0.5px;
+}
+
+.about-text p {
+    margin-bottom: 20px;
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+.about-image { flex: 1.2; text-align: right; }
+.about-image img {
+    max-width: 600px;
+    width: 100%;
+    height: auto;
+    border-radius: 12px;
+}
+
+.btn-primary {
+    display: inline-block;
+    padding: 12px 30px;
+    background-color: transparent;
+    color: #2c3e50;
+    border: 1px solid #2c3e50;
+    text-decoration: none;
+    border-radius: 30px;
+    font-weight: 500;
+    font-size: 0.95rem;
+    transition: all 0.3s;
+    margin-top: 10px;
+}
+
+.btn-primary:hover {
+    background-color: #2c3e50;
+    color: #fff;
+}
+
+.services-section {
+    background: linear-gradient(to bottom, #ffffff 0px, #213a4b 10px);
+    color: #fff;
+    padding: 30px 0 80px 0;
+    text-align: center;
+    box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.06);
+}
+
+.services-section .section-title {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 2.4rem;
+    margin-bottom: 35px;
+    font-weight: bold;
+    letter-spacing: -0.5px;
+}
+
+.slider-wrapper { position: relative; width: 100%; overflow-x: hidden; }
+.services-grid { display: flex; gap: 40px; justify-content: space-between; }
+
+.service-card {
+    flex: 1;
+    padding: 10px;
+    background-color: transparent;
+    border: none;
+    transition: transform 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.service-card:hover { transform: translateY(-5px); }
+
+.service-card h3 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-bottom: 20px;
+    color: #ffffff;
+    text-align: center;
+    min-height: 6.5rem;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+}
+
+.service-img {
+    width: 100%;
+    height: auto;
+    margin-bottom: 25px;
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+}
+
+.service-card p {
+    font-size: 0.9rem;
+    color: #e2e8f0;
+    font-weight: 400;
+    text-align: center;
+    line-height: 1.6;
+}
+
+.service-card p strong { font-weight: 600; color: #ffffff; }
+
+@media (max-width: 1024px) {
+    .slider-wrapper { padding: 0; }
+    .services-grid {
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        scroll-behavior: smooth;
+        gap: 0;
+    }
+    .services-grid::-webkit-scrollbar { display: none; }
+    .service-card { flex: 0 0 100%; scroll-snap-align: center; padding: 0 20px; }
+    .service-card p { font-size: 1.05rem; }
+}
+
+.map-section {
+    background: linear-gradient(to bottom, #213a4b 0px, #ffffff 10px);
+    background-color: #ffffff;
+    padding: 40px 0 80px 0;
+    text-align: center;
+    box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.06);
+}
+
+.map-section h2 {
+    font-family: 'Montserrat', sans-serif;
+    color: #2c3e50;
+    font-size: 2.4rem;
+    font-weight: bold;
+    margin-bottom: 35px;
+    letter-spacing: -0.5px;
+}
+
+.map-container { width: 100%; max-width: 1150px; margin: 0 auto; padding: 0 15px; }
+.map-container iframe {
+    width: 100%;
+    height: 450px;
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 10px 35px rgba(33, 58, 75, 0.08);
+    display: block;
+}
+
+/* ==========================================================================
+   ESTILOS ESPECÍFICOS PARA LA PÁGINA DE SERVICIOS
+   ========================================================================== */
+
+.services-hero {
+    background-color: #ffffff;
+    padding: 105px 0 30px 0; 
+    text-align: center;
+}
+
+.services-hero h1 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 3.2rem;
+    color: #213a4b;
+    font-weight: bold;
+    letter-spacing: -0.8px;
+}
+
+.services-intro-banner {
+    background-color: #213a4b;
+    color: #ffffff;
+    padding: 25px 0 45px 0;
+    text-align: center;
+}
+
+.services-intro-banner h2 {
+    font-family: 'Montserrat', sans-serif; 
+    font-size: 2.3rem;
+    font-weight: 600;
+    margin-bottom: 30px;
+    letter-spacing: 0.5px;
+}
+
+.banner-img-container {
+    max-width: 1150px; 
+    margin: 0 auto;
+    width: 100%;
+    padding: 0 15px;
+}
+
+.banner-img-container img {
+    width: 100%;
+    height: 460px; 
+    object-fit: cover; 
+    border-radius: 4px;
+}
+
+/* --- SECCIÓN PASOS: ZIGZAG SERPIENTE Y TARJETAS PREMIUM --- */
+.services-steps-section {
+    background: linear-gradient(to bottom, #213a4b 0px, #e2f3f7 10px, #e2f3f7 calc(100% - 10px), #ffffff 100%);
+    padding: 150px 0;
+    text-align: center;
+    position: relative;
+}
+
+.steps-relative-container {
+    position: relative;
+    width: 100%;
+    max-width: 1400px; 
+    margin: 0 auto;
+}
+
+.steps-container {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: nowrap; 
+    gap: 35px; 
+    width: 100%;
+    position: relative;
+    z-index: 2;
+}
+
+.snake-path-svg { display: none; }
+
+@media (min-width: 1025px) {
+    .snake-path-svg {
+        display: block;
+        position: absolute;
+        top: 150px; 
+        left: 0;
+        width: 100%;
+        height: 220px;
+        z-index: 1;
+        pointer-events: none;
+        overflow: visible;
+    }
+}
+
+.step-card {
+    flex: 1; 
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #ffffff;
+    padding: 50px 25px; 
+    border-radius: 18px;
+    box-shadow: 0 12px 38px rgba(33, 58, 75, 0.05);
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: 2;
+}
+
+.step-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 22px 50px rgba(33, 58, 75, 0.12);
+}
+
+/* JERARQUÍA CORREGIDA: Marca de agua en capa inferior */
+.step-number {
+    position: absolute;
+    top: 14px;
+    right: 20px;
+    font-size: 2.8rem;
+    font-weight: 800;
+    color: #e2f3f7; 
+    filter: brightness(0.95); 
+    pointer-events: none;
+    user-select: none;
+    z-index: 1;
+    transition: filter 0.3s ease;
+}
+
+.step-card:hover .step-number { filter: brightness(0.88); }
+
+/* JERARQUÍA CORREGIDA: Contenido en capa superior */
+.step-card h3, .step-card .step-icon-wrapper, .step-card .step-desc {
+    position: relative;
+    z-index: 3;
+}
+
+.step-card h3 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.15rem;
+    color: #213a4b;
+    font-weight: 700;
+    width: 100%;
+    padding-bottom: 15px;
+    margin-bottom: 22px;
+    border-bottom: 2px solid rgba(33, 58, 75, 0.12);
+    text-align: center;
+    min-height: 3.8rem; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: border-color 0.3s ease;
+}
+
+.step-card:hover h3 { border-bottom-color: rgba(86, 142, 158, 0.6); }
+
+.step-icon-wrapper {
+    width: 110px;
+    height: 110px;
+    background-color: rgba(86, 142, 158, 0.07); 
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 15px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.step-card:hover .step-icon-wrapper {
+    background-color: rgba(86, 142, 158, 0.14);
+    transform: scale(1.05);
+}
+
+.step-icon-wrapper img { width: 75px; height: auto; display: block; }
+.step-desc { font-size: 0.88rem; color: #555555; text-align: center; margin-top: 10px; }
+
+/* --- SECCIÓN INTERVENCION MAPA --- */
+.intervention-map-section {
+    background-color: #ffffff;
+    padding: 80px 0;
+    text-align: center;
+    color: #000000;
+}
+
+.intervention-map-section h2 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 2.2rem;
+    font-weight: bold;
+    margin-bottom: 25px;
+    letter-spacing: -0.5px;
+}
+
+.intervention-map-section .map-description {
+    font-size: 1.15rem;
+    max-width: 880px;
+    margin: 0 auto 50px auto;
+    line-height: 1.65;
+    font-weight: 600;
+}
+
+.map-timeline-img {
+    max-width: 940px;
+    width: 100%;
+    height: auto;
+    margin-bottom: 40px;
+    padding: 0 15px;
+}
+
+.map-cta-area {
+    max-width: 760px;
+    margin: 0 auto;
+    padding-top: 40px;
+    border-top: 2px solid rgba(33, 58, 75, 0.25);
+}
+
+.map-cta-text {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #213a4b;
+    line-height: 1.6;
+}
+
+/* ==========================================================================
+   RESTAURACIÓN DEL FOOTER EXTENDED
+   ========================================================================== */
+.site-footer-extended {
+    background-color: #213a4b; 
+    color: #ffffff;
+    padding: 40px 0 25px 0; 
+    text-align: center;
+    width: 100%;
+    display: block;
+    clear: both;
+}
+
+.footer-contact-grid {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 40px;
+    margin-bottom: 25px; 
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+.footer-item {
+    font-family: 'Montserrat', sans-serif;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1rem;
+    color: #e2e8f0;
+}
+
+.footer-item i { color: #8cbcd0; font-size: 1.2rem; }
+.footer-item a { color: #e2e8f0; text-decoration: none; transition: color 0.2s ease; }
+.footer-item a:hover { color: #ffffff; }
+
+.footer-copyright {
+    font-family: 'Montserrat', sans-serif;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    max-width: 1200px;
+    margin: 0 auto;
+    padding-top: 20px; 
+    font-size: 0.85rem;
+    color: #b0c4de;
+}
+
+/* ==========================================================================
+   ADAPTACIONES PARA DISPOSITIVOS MÓVILES
+   ========================================================================== */
+@media (max-width: 1024px) {
+    .steps-container { flex-wrap: wrap; justify-content: center; gap: 30px; }
+    .step-card { flex: 0 0 calc(50% - 15px); min-width: 260px; padding: 35px 25px; }
+}
+
+@media (max-width: 768px) {
+    .header-container { padding: 15px 0; }
+    .menu-toggle { display: block; }
+    .main-nav { 
+        display: none; 
+        width: 100%; 
+        position: absolute; 
+        top: 100%; 
+        left: 0; 
+        background-color: #f2f9f9; 
+        box-shadow: 0 4px 6px rgba(0,0,0,0.05); 
+    }
+    .main-nav.open { display: block; }
+    .main-nav ul { flex-direction: column; gap: 0; }
+    .main-nav a { display: block; padding: 15px; border-bottom: 1px solid #e2e8f0; }
+    
+    .hero-section { padding: 100px 15px 60px 15px; }
+    .hero-section h1 { font-size: 1.5rem; }
+    .about-grid { flex-direction: column; gap: 40px; }
+    .map-container iframe { height: 320px; } 
+    
+    .services-hero h1 { font-size: 2.4rem; }
+    .services-intro-banner h2 { font-size: 1.7rem; }
+    .banner-img-container img { height: 280px; } 
+    
+    .step-card { flex: 0 0 100%; }
+    .intervention-map-section h2 { font-size: 1.5rem; }
+
+    .footer-contact-grid {
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 16px;
+    }
+    .footer-item {
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+    }
+}
+
+.main-nav .btn-nav {
+    background-color: #568e9e;
+    color: white !important;
+    padding: 8px 16px;
+    border-radius: 20px;
+    border: none;
+    text-decoration: none !important;
+}
+
+.main-nav .btn-nav:hover { background-color: #3e6d7a; color: white !important; }
+
+.about-section, .services-section, .map-section,
+.services-hero, .services-intro-banner, .services-steps-section, .intervention-map-section {
+    animation: fadeIn 1s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
