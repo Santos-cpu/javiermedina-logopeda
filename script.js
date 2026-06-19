@@ -1,14 +1,15 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // 1. LÓGICA DEL MENÚ MÓVIL
+    
+    // ==========================================================================
+    // 1. LÓGICA DEL MENÚ MÓVIL (HAMBURGUESA)
+    // ==========================================================================
     const menuToggle = document.querySelector('.menu-toggle');
     const mainNav = document.querySelector('.main-nav');
 
     if (menuToggle && mainNav) {
         menuToggle.addEventListener('click', () => {
-            // Abrimos/Cerramos el menú
             mainNav.classList.toggle('open');
             
-            // Cambiamos el icono (de barras a cruz)
             const icon = menuToggle.querySelector('i');
             if (mainNav.classList.contains('open')) {
                 icon.className = 'fas fa-times';
@@ -17,16 +18,18 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        // Opcional: Cerrar menú al hacer clic en un enlace (muy útil en móvil)
         mainNav.querySelectorAll('a').forEach(link => {
             link.addEventListener('click', () => {
                 mainNav.classList.remove('open');
-                menuToggle.querySelector('i').className = 'fas fa-bars';
+                const icon = menuToggle.querySelector('i');
+                if (icon) icon.className = 'fas fa-bars';
             });
         });
     }
 
-    // 2. LÓGICA DE LA ANIMACIÓN PEEK (MOVIMIENTO SUAVE)
+    // ==========================================================================
+    // 2. EFECTO MUELLE (PEEK ANIMATION) EN EL INDEX
+    // ==========================================================================
     const slider = document.getElementById('services-slider');
 
     if (slider) {
@@ -61,21 +64,27 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (entry.isIntersecting && window.innerWidth <= 1024) {
                     if (!hasPeeked) {
                         hasPeeked = true;
+                        
                         setTimeout(() => {
+                            // 1. Desactivamos el imán CSS temporalmente
                             slider.classList.add('no-snap');
-                            const distance = slider.clientWidth * 0.3;
-                            smoothScroll(slider, distance, 550, () => {
-                                smoothScroll(slider, 0, 550, () => {
+                            
+                            // 2. Asomamos un 40% del ancho de la tarjeta
+                            const distance = slider.clientWidth * 0.40;
+                            
+                            smoothScroll(slider, distance, 600, () => {
+                                smoothScroll(slider, 0, 500, () => {
+                                    // 3. Reactivamos el imán para que el usuario deslice
                                     slider.classList.remove('no-snap');
                                 });
                             });
-                        }, 800);
+                        }, 1000); 
                     }
-                } else {
-                    hasPeeked = false;
+                } else if (!entry.isIntersecting) {
+                    hasPeeked = false; 
                 }
             });
-        }, { threshold: 0.6 });
+        }, { threshold: 0.5 }); 
 
         observer.observe(slider);
     }

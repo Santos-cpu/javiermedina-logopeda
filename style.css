@@ -51,6 +51,23 @@ html, body {
     margin: 0 auto;
 }
 
+/* Estilos para ubicar el logo a la izquierda del todo del header sin alinear con nada */
+.header-logo-link {
+    position: absolute;
+    left: 25px; /* Distancia fija al borde izquierdo de la pantalla */
+    top: 50%;
+    transform: translateY(-50%);
+    display: block;
+    z-index: 1010;
+}
+
+.header-logo-img {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    display: block;
+}
+
 .logo a {
     font-family: 'Montserrat', sans-serif;
     font-size: 1.2rem;
@@ -145,7 +162,7 @@ html, body {
     font-size: 2.5rem;
     margin-bottom: 25px;
     color: #000000;
-    font-weight: 800;
+    font-weight: bold;
     letter-spacing: -0.5px;
 }
 
@@ -245,17 +262,36 @@ html, body {
 
 .service-card p strong { font-weight: 600; color: #ffffff; }
 
+/* Adaptación premium del carrusel móvil / tablet (MANTENIDO AL 100%) */
 @media (max-width: 1024px) {
-    .slider-wrapper { padding: 0; }
+    .slider-wrapper { 
+        padding: 0; 
+    }
     .services-grid {
+        justify-content: flex-start;
+        flex-wrap: nowrap;
         overflow-x: auto;
         scroll-snap-type: x mandatory;
         scroll-behavior: smooth;
-        gap: 0;
+        gap: 20px;
+        padding: 10px 0 30px 0;
     }
-    .services-grid::-webkit-scrollbar { display: none; }
-    .service-card { flex: 0 0 100%; scroll-snap-align: center; padding: 0 20px; }
-    .service-card p { font-size: 1.05rem; }
+    .services-grid::-webkit-scrollbar { 
+        display: none; 
+    }
+    .service-card { 
+        flex: 0 0 100%; 
+        scroll-snap-align: center;
+        padding: 30px 20px; 
+    }
+    .service-card p { 
+        font-size: 1.05rem; 
+    }
+}
+
+.no-snap {
+    scroll-snap-type: none !important;
+    scroll-behavior: auto !important;
 }
 
 .map-section {
@@ -332,7 +368,7 @@ html, body {
     border-radius: 4px;
 }
 
-/* --- SECCIÓN PASOS: ZIGZAG SERPIENTE Y TARJETAS PREMIUM --- */
+/* --- SECCIÓN PASOS: SERPIENTE Y CONTENEDOR AJUSTADO PARA ULTRA-WIDE --- */
 .services-steps-section {
     background: linear-gradient(to bottom, #213a4b 0px, #e2f3f7 10px, #e2f3f7 calc(100% - 10px), #ffffff 100%);
     padding: 150px 0;
@@ -342,8 +378,8 @@ html, body {
 
 .steps-relative-container {
     position: relative;
-    width: 100%;
-    max-width: 1400px; 
+    width: 92%;
+    max-width: 1440px; 
     margin: 0 auto;
 }
 
@@ -357,22 +393,6 @@ html, body {
     z-index: 2;
 }
 
-.snake-path-svg { display: none; }
-
-@media (min-width: 1025px) {
-    .snake-path-svg {
-        display: block;
-        position: absolute;
-        top: 150px; 
-        left: 0;
-        width: 100%;
-        height: 220px;
-        z-index: 1;
-        pointer-events: none;
-        overflow: visible;
-    }
-}
-
 .step-card {
     flex: 1; 
     position: relative;
@@ -380,7 +400,7 @@ html, body {
     flex-direction: column;
     align-items: center;
     background-color: #ffffff;
-    padding: 50px 25px; 
+    padding: 50px 15px; 
     border-radius: 18px;
     box-shadow: 0 12px 38px rgba(33, 58, 75, 0.05);
     transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1);
@@ -392,7 +412,6 @@ html, body {
     box-shadow: 0 22px 50px rgba(33, 58, 75, 0.12);
 }
 
-/* JERARQUÍA CORREGIDA: Marca de agua en capa inferior */
 .step-number {
     position: absolute;
     top: 14px;
@@ -409,8 +428,9 @@ html, body {
 
 .step-card:hover .step-number { filter: brightness(0.88); }
 
-/* JERARQUÍA CORREGIDA: Contenido en capa superior */
-.step-card h3, .step-card .step-icon-wrapper, .step-card .step-desc {
+.step-card h3, 
+.step-card .step-icon-wrapper, 
+.step-card .step-desc {
     position: relative;
     z-index: 3;
 }
@@ -435,24 +455,45 @@ html, body {
 .step-card:hover h3 { border-bottom-color: rgba(86, 142, 158, 0.6); }
 
 .step-icon-wrapper {
-    width: 110px;
-    height: 110px;
+    width: 200px; 
+    height: 200px;
     background-color: rgba(86, 142, 158, 0.07); 
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 15px;
+    margin-bottom: 25px; 
     transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
 .step-card:hover .step-icon-wrapper {
     background-color: rgba(86, 142, 158, 0.14);
-    transform: scale(1.05);
+    transform: scale(1.03); 
 }
 
-.step-icon-wrapper img { width: 75px; height: auto; display: block; }
+.step-icon-wrapper img { 
+    width: 150px; 
+    height: auto; 
+    display: block; 
+}
+
 .step-desc { font-size: 0.88rem; color: #555555; text-align: center; margin-top: 10px; }
+
+.snake-path-svg { display: none; }
+
+@media (min-width: 1025px) {
+    .snake-path-svg {
+        display: block;
+        position: absolute;
+        top: 140px; 
+        left: 0;
+        width: 100%;
+        height: 220px;
+        z-index: 1;
+        pointer-events: none;
+        overflow: visible;
+    }
+}
 
 /* --- SECCIÓN INTERVENCION MAPA --- */
 .intervention-map-section {
@@ -468,7 +509,6 @@ html, body {
     font-weight: bold;
     margin-bottom: 25px;
     letter-spacing: -0.5px;
-    text-decoration: underline;
 }
 
 .intervention-map-section .map-description {
@@ -549,16 +589,22 @@ html, body {
 }
 
 /* ==========================================================================
-   ADAPTACIONES PARA DISPOSITIVOS MÓVILES
+   ADAPTACIONES RESPONSIVE ADICIONALES
    ========================================================================== */
 @media (max-width: 1024px) {
     .steps-container { flex-wrap: wrap; justify-content: center; gap: 30px; }
     .step-card { flex: 0 0 calc(50% - 15px); min-width: 260px; padding: 35px 25px; }
+
+    /* El logo independiente desaparece también en tablets para evitar que choque con el nombre */
+    .header-logo-link {
+        display: none !important;
+    }
 }
 
 @media (max-width: 768px) {
     .header-container { padding: 15px 0; }
     .menu-toggle { display: block; }
+    
     .main-nav { 
         display: none; 
         width: 100%; 
@@ -567,6 +613,7 @@ html, body {
         left: 0; 
         background-color: #f2f9f9; 
         box-shadow: 0 4px 6px rgba(0,0,0,0.05); 
+        z-index: 1001; 
     }
     .main-nav.open { display: block; }
     .main-nav ul { flex-direction: column; gap: 0; }
@@ -597,6 +644,7 @@ html, body {
     }
 }
 
+/* --- LOGÍSTICA DE BOTONES --- */
 .main-nav .btn-nav {
     background-color: #568e9e;
     color: white !important;
