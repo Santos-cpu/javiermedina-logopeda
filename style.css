@@ -172,7 +172,7 @@ html, body {
     font-size: 1.1rem;
 }
 
-.about-image { flex: 1.2; text-align: right; }
+.about-image { flex: 0.5; text-align: right; }
 .about-image img {
     max-width: 600px;
     width: 100%;
