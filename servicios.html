@@ -3,7 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Javier Medina - Logopeda | Intervención especializada en Huelva</title>
+    
+    <!-- SEO Básico Personalizado para la página de Servicios -->
+    <title>Servicios de Logopedia en Huelva | Javier Medina</title>
+    <meta name="description" content="Conoce nuestros servicios de logopedia en Huelva: intervención pediátrica, evaluación clínica, dificultades del aprendizaje y Sistemas Alternativos (SAAC).">
+    <meta name="keywords" content="servicios logopedia huelva, evaluacion logopedica huelva, tratamiento logopeda huelva, logopedia infantil huelva">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://javiermedinalogopeda.com/servicios.html">
+
+    <!-- Open Graph Personalizado para Redes Sociales (Servicios) -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Servicios de Logopedia en Huelva | Javier Medina">
+    <meta property="og:description" content="Descubre nuestro mapa de intervención logopédica personalizado. Evaluaciones y tratamientos adaptados en Huelva.">
+    <meta property="og:image" content="interlogo.png">
+    <meta property="og:url" content="https://javiermedinalogopeda.com/servicios.html">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -12,15 +26,13 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
-
     <header class="site-header">
         <div class="container header-container">
             <a href="index.html" class="header-logo-link">
                 <img src="logo.png" alt="Logo Javier Medina" class="header-logo-img">
             </a>
-
             <div class="logo">
-                <a href="index.html">Javier Medina – Logopeda</a>
+                <a href="index.html">Javier Medina - Logopeda</a>
             </div>
             <button class="menu-toggle" aria-label="Abrir menú">
                 <i class="fas fa-bars"></i>
@@ -29,6 +41,7 @@
                 <ul>
                     <li><a href="index.html">Inicio</a></li>
                     <li><a href="servicios.html" class="active">Servicios</a></li>
+                    <li><a href="noticias.html">Noticias</a></li>
                     <li><a href="index.html#contacto">Contacto</a></li>
                 </ul>
             </nav>
@@ -52,13 +65,13 @@
 
     <section class="services-steps-section" id="pasos-section">
         <div class="container steps-relative-container">
-            
+             
             <svg class="snake-path-svg" viewBox="0 0 1400 220" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M 100,145 Q 235,-5 370,145 Q 505,295 640,145 Q 775,-5 910,145 Q 1045,295 1180,145 Q 1240,80 1300,135" stroke="#568e9e" stroke-width="5" stroke-dasharray="10,12" stroke-linecap="round" id="snake-body" style="opacity: 0.6; transition: stroke-dashoffset 2.8s ease-in-out;"/>
                 <g id="snake-head" style="opacity: 0; transition: opacity 0.4s ease-out, transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); transform: scale(0.5); transform-origin: 1300px 135px;">
                     <circle cx="1300" cy="135" r="16" fill="#568e9e"/>
-                    <circle cx="1295" cy="130" r="2.5" fill="#ffffff"/> 
-                    <circle cx="1305" cy="130" r="2.5" fill="#ffffff"/> 
+                    <circle cx="1295" cy="130" r="2.5" fill="#ffffff"/>
+                    <circle cx="1305" cy="130" r="2.5" fill="#ffffff"/>
                     <path d="M 1293 140 Q 1300 146 1307 140" stroke="#ffffff" stroke-width="2" stroke-linecap="round"/>
                     <path d="M 1315 135 Q 1323 133 1328 135 M 1323 134 L 1326 131" stroke="#ff6b7a" stroke-width="2" stroke-linecap="round"/>
                 </g>
@@ -73,7 +86,6 @@
                     </div>
                     <p class="step-desc">Un espacio tranquilo y sin prisas para escucharte, entender tu situación y resolver tus primeras dudas.</p>
                 </div>
-
                 <div class="step-card">
                     <span class="step-number">02</span>
                     <h3>Evaluación inicial</h3>
@@ -82,7 +94,6 @@
                     </div>
                     <p class="step-desc">Valoramos en detalle cada aspecto de la comunicación para trazar un diagnóstico clínico riguroso.</p>
                 </div>
-
                 <div class="step-card">
                     <span class="step-number">03</span>
                     <h3>Tratamiento individualizado</h3>
@@ -91,7 +102,6 @@
                     </div>
                     <p class="step-desc">Diseñamos sesiones dinámicas y totalmente personalizadas, adaptadas a tu propio ritmo de progreso.</p>
                 </div>
-
                 <div class="step-card">
                     <span class="step-number">04</span>
                     <h3>Alta</h3>
@@ -100,7 +110,6 @@
                     </div>
                     <p class="step-desc">El momento más esperado, donde consolidamos los objetivos alcanzados y celebramos tu autonomía.</p>
                 </div>
-
                 <div class="step-card">
                     <span class="step-number">05</span>
                     <h3>Seguimiento de casos</h3>
@@ -157,12 +166,10 @@
             const bodyPath = document.getElementById("snake-body");
             const headGroup = document.getElementById("snake-head");
             let headTimeout;
-
             if (bodyPath) {
                 const length = bodyPath.getTotalLength();
                 bodyPath.style.strokeDasharray = length;
                 bodyPath.style.strokeDashoffset = length;
-
                 const observer = new IntersectionObserver((entries) => {
                     entries.forEach(entry => {
                         if (entry.isIntersecting) {
@@ -173,7 +180,7 @@
                             headTimeout = setTimeout(() => {
                                 headGroup.style.opacity = "1";
                                 headGroup.style.transform = "scale(1)";
-                            }, 2500); 
+                            }, 2500);
                         } else {
                             bodyPath.style.transition = "none";
                             bodyPath.style.strokeDashoffset = length;
@@ -184,7 +191,6 @@
                         }
                     });
                 }, { threshold: 0.15 });
-
                 if (section) {
                     observer.observe(section);
                 }

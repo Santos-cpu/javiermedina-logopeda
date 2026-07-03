@@ -1,0 +1,66 @@
+[
+  {
+    "id": 1,
+    "titulo": "La importancia de la detección temprana en el desarrollo del lenguaje",
+    "fecha": "03 de Julio de 2026",
+    "imagen": "pediatrica.png",
+    "resumen": "Identificar las dificultades en el habla durante los primeros años de vida es clave para garantizar una evolución comunicativa óptima y prevenir problemas de aprendizaje escolar.",
+    "contenido": "El desarrollo del lenguaje en la infancia es un proceso complejo que varía en cada niño, pero existen ciertos hitos cronológicos que nos sirven de guía. Cuando un niño no alcanza estos hitos, la intervención de un profesional especializado de forma temprana puede marcar una diferencia drástica. Acudir al logopeda ante las primeras sospechas no significa alarmarse, sino proporcionar al menor las herramientas necesarias para su correcto desarrollo cognitivo y social."
+  },
+  {
+    "id": 2,
+    "titulo": "Sistemas SAAC: Rompiendo barreras en la comunicación",
+    "fecha": "25 de Junio de 2026",
+    "imagen": "aumentativos.png",
+    "resumen": "Los Sistemas Aumentativos y Alternativos de Comunicación permiten que personas con dificultades en el habla puedan expresarse de forma autónoma y eficaz.",
+    "contenido": "Los sistemas SAAC no sustituyen al lenguaje verbal, sino que actúan como un puente o soporte para facilitarlo. Mediante el uso de pictogramas, pulsadores o aplicaciones tecnológicas especializadas, ayudamos a los usuarios a compartir sus necesidades, emociones y elecciones diarias. Implementar un sistema SAAC a tiempo reduce la frustración del usuario y fomenta una inclusión real en su entorno familiar y escolar."
+  },
+  {
+    "id": 3,
+    "titulo": "Cómo estimular el lenguaje de tus hijos desde casa",
+    "fecha": "12 de Junio de 2026",
+    "imagen": "asesoramiento.png",
+    "resumen": "El entorno familiar es el contexto ideal para potenciar el habla de los más pequeños. Te ofrecemos tres pautas cotidianas y sencillas de aplicar.",
+    "contenido": "El asesoramiento familiar es una pieza indispensable en cualquier terapia logopédica. En casa, gestos tan sencillos como hablar despacio y de frente al niño, leer cuentos juntos señalando las imágenes o evitar corregirle de forma directa diciéndole 'así no se dice', sino repitiendo la palabra correctamente dentro de una frase natural, estimulan enormemente sus capacidades comunicativas sin generar presiones."
+  },
+  {
+    "id": 4,
+    "titulo": "Dificultades de alimentación y deglución: Abordaje desde la logopedia",
+    "fecha": "01 de Junio de 2026",
+    "imagen": "pediatrica.png",
+    "resumen": "La terapia miofuncional interviene en las alteraciones de la masticación y la deglución tanto en niños como en adultos, asegurando una alimentación segura.",
+    "contenido": "Muchos desconocen que las funciones de hablar y comer comparten las mismas estructuras musculares. Cuando existen dificultades para masticar correctamente, deglutir los alimentos o se presentan patrones de respiración bucal, la logopedia interviene mediante terapia miofuncional. Ejercitar de forma dirigida la musculatura orofacial no solo mejora las funciones vitales de alimentación, sino que tiene un impacto directo y positivo en la claridad de la articulación del habla."
+  },
+  {
+    "id": 5,
+    "titulo": "Autismo y comunicación: El papel de los apoyos visuales",
+    "fecha": "18 de Mayo de 2026",
+    "imagen": "aumentativos.png",
+    "resumen": "Estrategias de estructuración ambiental y el uso de agendas visuales para mejorar la comprensión y anticipación en personas dentro del espectro autista.",
+    "contenido": "Para las personas con Condición del Espectro Autista (CEA), el mundo puede resultar en ocasiones impredecible o abrumador. Los apoyos visuales, como las agendas de pasos secuenciales o los paneles de anticipación, ofrecen una estructura clara que reduce drásticamente la ansiedad. Desde la consulta trabajamos en el diseño de estos entornos estructurados adaptados al día a día de cada usuario, facilitando su autonomía y su interacción social."
+  },
+  {
+    "id": 6,
+    "titulo": "Rehabilitación de la afasia tras un daño cerebral adquirido",
+    "fecha": "04 de Mayo de 2026",
+    "imagen": "asesoramiento.png",
+    "resumen": "La intervención logopédica post-ictus es fundamental para recuperar las capacidades lingüísticas perdidas y dotar al paciente de nuevas estrategias comunicativas.",
+    "contenido": "La afasia es una alteración del lenguaje producida por una lesión cerebral que afecta a la expresión, la comprensión, la lectura o la escritura. El tratamiento logopédico enfocado en adultos busca estimular la plasticidad neuronal para recuperar al máximo los canales de comunicación afectados. Además, se capacita al entorno cercano del paciente en el uso de técnicas de comunicación simplificada para mantener una vida social activa."
+  },
+  {
+    "id": 7,
+    "titulo": "Mitos y realidades sobre la tartamudez infantil",
+    "fecha": "20 de Abril de 2026",
+    "imagen": "pediatrica.png",
+    "resumen": "Desmontamos los prejuicios más comunes sobre las disfemias y explicamos cómo actuar adecuadamente ante los bloqueos en el habla de los niños.",
+    "contenido": "Existe el falso mito de que la tartamudez o disfemia está causada por los nervios o por una baja autoestima. La realidad es que tiene un origen neurobiológico. Ante un niño que presenta bloqueos o repeticiones, lo más importante es no terminar las frases por él, mantener el contacto visual con tranquilidad y darle el tiempo que necesite para expresarse. La intervención temprana ayuda a guiar el habla fluida de forma respetuosa."
+  },
+  {
+    "id": 8,
+    "titulo": "El juego terapéutico como motor del aprendizaje clínico",
+    "fecha": "05 de Abril de 2026",
+    "imagen": "aumentativos.png",
+    "resumen": "Por qué utilizamos dinámicas lúdicas en consulta para alcanzar objetivos rigurosos sin que el niño perciba la terapia como una obligación escolar.",
+    "contenido": "En logopedia infantil, el juego no es un entretenimiento, es el canal natural a través del cual los niños descubren el mundo y asimilan el lenguaje. Diseñar actividades donde el niño tira un dado, interactúa con un muñeco o resuelve un misterio nos permite trabajar fonemas, vocabulario y estructuras gramaticales complejas de manera orgánica. El cerebro infantil aprende mucho mejor cuando está motivado y emocionalmente conectado."
+  }
+]
