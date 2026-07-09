@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
 
     // ==========================================================================
-    // 1. LÓGICA DEL MENÚ MÓVIL (HAMBURGUESA) - MANTENIDO INTACTO
+    // 1. LÓGICA DEL MENÚ MÓVIL (HAMBURGUESA)
     // ==========================================================================
     const menuToggle = document.querySelector('.menu-toggle');
     const mainNav = document.querySelector('.main-nav');
@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ==========================================================================
-    // 2. EFECTO MUELLE (PEEK ANIMATION) EN LOS SERVICIOS - MANTENIDO INTACTO
+    // 2. EFECTO MUELLE (PEEK ANIMATION) EN LOS SERVICIOS
     // ==========================================================================
     const slider = document.getElementById('services-slider');
     if (slider) {
@@ -78,24 +78,18 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ==========================================================================
-    // 3. CONEXIÓN Y PROCESAMIENTO DE TU ENLACE DE GOOGLE SHEETS
+    // 3. CONEXIÓN INSTANTÁNEA CON GOOGLE APPS SCRIPT
     // ==========================================================================
-    
-    // PASA AQUÍ TU ENLACE DE GOOGLE SHEETS EXPORTADO COMO .CSV:
-    const GOOGLE_SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTzpckW2B0wqDKdcIJJy57dsPRS9oEbLSlHfD7SFh0w-3EnUhYrZ8eRZdRW3KUAkHzlpha0s1PeTZcc/pub?output=csv';
+    const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzlAQXbX3TtvgSTtfHl49R3BrpfL53Khk_ubOgtmLXTZEQ-tbmZWOkC0dOJ2aUSyOmcuA/exec';
 
-    fetch(GOOGLE_SHEET_CSV_URL)
+    fetch(GOOGLE_SCRIPT_URL + '?t=' + new Date().getTime())
         .then(response => {
             if (!response.ok) {
                 throw new Error("No se pudo conectar con la base de datos de Google Sheets");
             }
-            return response.text(); // Recibimos la respuesta como texto bruto CSV
+            return response.json(); 
         })
-        .then(csvText => {
-            // Conversión y Limpieza del CSV a formato legible JSON
-            const data = parseCSVToJSON(csvText);
-
-            // Inyección preventiva de categorías por defecto si están vacías
+        .then(data => {
             data.forEach(article => {
                 if (!article.categoria || article.categoria.trim() === '') {
                     article.categoria = 'consejos';
@@ -105,7 +99,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             // ----------------------------------------------------------------------
-            // A. RENDERIZADO EN LA PORTADA (INDEX.HTML) - CON AUTO-PLAY Y SEPARACIÓN NATIVA
+            // A. RENDERIZADO EN LA PORTADA (INDEX.HTML)
             // ----------------------------------------------------------------------
             const newsSlider = document.getElementById('news-slider');
             if (newsSlider && data.length > 0) {
@@ -138,13 +132,16 @@ document.addEventListener('DOMContentLoaded', () => {
                     const linkHref = isExternal ? article.url_externa.trim() : 'noticias.html';
                     const linkTarget = isExternal ? 'target="_blank"' : '';
                     const linkText = isExternal ? 'Ver artículo completo &rarr;' : 'Leer más &rarr;';
+                    
+                    // Aseguramos que los saltos de línea se vean en las tarjetas cortas
+                    const formattedResumen = article.resumen ? article.resumen.replace(/\n/g, '<br>') : '';
 
                     newsSlider.innerHTML += `
                         <div class="service-card" style="background: #ffffff; padding: 25px; border-radius: 15px; box-shadow: 0 8px 20px rgba(33, 58, 75, 0.05); color: #3a3a3a; text-align: left; align-items: flex-start; border: 1px solid rgba(86, 142, 158, 0.15); display: flex; flex-direction: column; transition: transform 0.2s; box-sizing: border-box; margin: 0; min-width: 0; scroll-snap-align: none !important;">
                             <img src="${article.imagen}" alt="${article.titulo}" class="service-img" style="width: 100%; height: 180px; object-fit: cover; border-radius: 10px; margin-bottom: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.06);" draggable="false">
                             <span style="font-size: 0.8rem; color: #568e9e; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">${article.fecha}</span>
                             <h3 style="color: #213a4b; font-size: 1.15rem; min-height: auto; margin: 8px 0 12px 0; text-align: left; justify-content: flex-start; display: block; font-weight: 700; line-height: 1.4;">${article.titulo}</h3>
-                            <p style="font-size: 0.88rem; color: #555555; text-align: left; margin-bottom: 15px; line-height: 1.6; font-weight: 500;">${article.resumen}</p>
+                            <p style="font-size: 0.88rem; color: #555555; text-align: left; margin-bottom: 15px; line-height: 1.6; font-weight: 500;">${formattedResumen}</p>
                             <a href="${linkHref}" ${linkTarget} style="color: #568e9e; font-weight: 700; text-decoration: none; font-size: 0.9rem; margin-top: auto; transition: color 0.2s;" draggable="false">${linkText}</a>
                         </div>
                     `;
@@ -227,6 +224,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     else itemsPerView = 1; 
 
                     const cards = newsSlider.querySelectorAll('.service-card');
+                    if (cards.length === 0) return;
+                    
                     const containerWidth = newsSlider.getBoundingClientRect().width;
                     const cardWidth = (containerWidth - (gap * (itemsPerView - 1))) / itemsPerView;
 
@@ -343,7 +342,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             // ----------------------------------------------------------------------
-            // B. RENDERIZADO EN BLOG (NOTICIAS.HTML) - GESTIÓN DE NOTICIA LOCAL VS REDIRECCIÓN EXTERNA
+            // B. RENDERIZADO EN BLOG (NOTICIAS.HTML)
             // ----------------------------------------------------------------------
             const blogGrid = document.getElementById('blog-articles-grid');
             
@@ -365,7 +364,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 articlesToShow.forEach(article => {
                     const isExternal = article.url_externa && article.url_externa.trim() !== '';
                     
-                    // Si es externa, inyectamos un botón tipo <a> que redirige fuera, si no, se queda el botón plegable habitual
+                    // Aseguramos que los saltos de línea (\n) se conviertan en <br> para respetar los párrafos en la redacción web
+                    const formattedResumen = article.resumen ? article.resumen.replace(/\n/g, '<br>') : '';
+                    const formattedContenido = article.contenido ? article.contenido.replace(/\n/g, '<br>') : '';
+                    
                     const actionButtonHTML = isExternal 
                         ? `<a href="${article.url_externa.trim()}" target="_blank" class="read-more-btn" style="margin-top: auto; background: none; border: 1px solid #568e9e; color: #568e9e; padding: 10px 22px; border-radius: 25px; font-weight: 600; font-family: 'Montserrat', sans-serif; font-size: 0.85rem; cursor: pointer; transition: all 0.3s ease; align-self: flex-start; text-decoration: none; text-align: center;">Ver artículo completo <i class="fas fa-external-link-alt" style="font-size: 0.75rem; margin-left: 4px;"></i></a>`
                         : `<button class="read-more-btn" style="margin-top: auto; background: none; border: 1px solid #568e9e; color: #568e9e; padding: 10px 22px; border-radius: 25px; font-weight: 600; font-family: 'Montserrat', sans-serif; font-size: 0.85rem; cursor: pointer; transition: all 0.3s ease; align-self: flex-start;">Leer noticia completa</button>`;
@@ -379,11 +381,10 @@ document.addEventListener('DOMContentLoaded', () => {
                             <img src="${article.imagen}" alt="${article.titulo}" style="width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 6px 15px rgba(0,0,0,0.03);">
                             <span style="font-size: 0.8rem; color: #568e9e; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px;">${article.fecha}</span>
                             <h2 style="font-family: 'Montserrat', sans-serif; font-size: 1.35rem; color: #213a4b; font-weight: 700; margin-bottom: 15px; line-height: 1.4; text-align: left;">${article.titulo}</h2>
-                            <p style="font-size: 0.92rem; color: #555555; line-height: 1.6; margin-bottom: 20px; font-weight: 500; text-align: left;">${article.resumen}</p>
+                            <p style="font-size: 0.92rem; color: #555555; line-height: 1.6; margin-bottom: 20px; font-weight: 500; text-align: left;">${formattedResumen}</p>
                             
-                            <!-- Bloque Expandible (Sólo se expandirá si es noticia local) -->
                             <div class="full-content" style="max-height: 0px; opacity: 0; overflow: hidden; font-size: 0.92rem; color: #4a4a4a; line-height: 1.65; border-top: 1px dashed rgba(86, 142, 158, 0.3); padding-top: 15px; margin-bottom: 20px; text-align: left;">
-                                ${article.contenido}
+                                ${formattedContenido}
                             </div>
                             
                             ${actionButtonHTML}
@@ -391,9 +392,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     `;
                 });
 
-                // Escucha de despliegue cinemático por software (Exclusivo para etiquetas <button>)
                 blogGrid.querySelectorAll('article').forEach(card => {
-                    const btn = card.querySelector('button.read-more-btn'); // Buscamos solo si es el botón físico
+                    const btn = card.querySelector('button.read-more-btn'); 
                     const content = card.querySelector('.full-content');
                     
                     if (btn && content) {
@@ -454,42 +454,15 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
     // ==========================================================================
-    // 4. MOTOR DE CONVERSIÓN NATIVO CSV A JSON (BYPASS DE API KEYS Y CORS)
+    // MAGIA EN TIEMPO REAL: RECARGA AUTOMÁTICA AL MODIFICAR DESDE EL PANEL
     // ==========================================================================
-    function parseCSVToJSON(text) {
-        let lines = [];
-        let row = [''];
-        let inQuotes = false;
-        
-        for (let i = 0; i < text.length; i++) {
-            let c = text[i];
-            let next = text[i+1];
-            if (c === '"') {
-                if (inQuotes && next === '"') { row[row.length - 1] += '"'; i++; }
-                else { inQuotes = !inQuotes; }
-            } else if (c === ',' && !inQuotes) {
-                row.push('');
-            } else if ((c === '\r' || c === '\n') && !inQuotes) {
-                if (c === '\r' && next === '\n') { i++; }
-                lines.push(row);
-                row = [''];
-            } else {
-                row[row.length - 1] += c;
+    if ('BroadcastChannel' in window) {
+        const syncChannel = new BroadcastChannel('logopedia_sync');
+        syncChannel.onmessage = (event) => {
+            if (event.data === 'refresh') {
+                // Si el panel de control manda el aviso, esta pestaña se recarga sola al instante
+                window.location.reload();
             }
-        }
-        if (row.length > 1 || row[0] !== '') lines.push(row);
-        if (lines.length === 0) return [];
-        
-        const headers = lines[0].map(h => h.trim().toLowerCase());
-        const jsonData = [];
-        for (let i = 1; i < lines.length; i++) {
-            if (lines[i].length < headers.length) continue;
-            const obj = {};
-            for (let j = 0; j < headers.length; j++) {
-                obj[headers[j]] = lines[i][j] ? lines[i][j].trim() : '';
-            }
-            jsonData.push(obj);
-        }
-        return jsonData;
+        };
     }
 });

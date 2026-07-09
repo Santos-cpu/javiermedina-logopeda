@@ -1,0 +1,22 @@
+{
+  "short_name": "Logopedia Admin",
+  "name": "Panel de Control - Javier Medina Logopeda",
+  "icons": [
+    {
+      "src": "../logo.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "../logo.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "start_url": "index.html",
+  "background_color": "#e2f3f7",
+  "theme_color": "#213a4b",
+  "display": "standalone",
+  "orientation": "portrait"
+}
