@@ -8,111 +8,272 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
+    <!-- LIBRERÍA QUILL.JS -->
+    <link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet">
+    
     <style>
         :root { --dark: #213a4b; --teal: #568e9e; --light: #e2f3f7; }
         body { font-family: 'Montserrat', sans-serif; background-color: var(--light); color: var(--dark); margin: 0; padding: 20px; }
+        
         .admin-box { max-width: 700px; background: #ffffff; margin: 20px auto 40px auto; padding: 30px; border-radius: 20px; box-shadow: 0 15px 35px rgba(33,58,75,0.1); }
         h1 { font-size: 1.6rem; text-align: center; margin-bottom: 25px; font-weight: 700; color: var(--dark); }
         
         .install-banner { display: none; background: var(--dark); color: #ffffff; padding: 15px 20px; border-radius: 12px; margin: 10px auto; max-width: 660px; text-align: center; box-shadow: 0 6px 15px rgba(0,0,0,0.1); }
         .install-btn-trigger { background: var(--teal); color: #ffffff; border: none; padding: 8px 18px; border-radius: 20px; font-weight: 600; margin-left: 15px; cursor: pointer; font-family: inherit; font-size: 0.85rem; }
         
-        .tabs { display: flex; gap: 8px; margin-bottom: 25px; }
-        .tab-btn { flex: 1; padding: 12px 5px; border: none; background: #f0f4f8; border-radius: 10px; font-weight: 600; font-size: 0.85rem; cursor: pointer; color: var(--dark); transition: all 0.3s; }
+        .tabs { display: flex; gap: 8px; margin-bottom: 25px; flex-wrap: wrap; }
+        .tab-btn { flex: 1; padding: 12px 5px; border: none; background: #f0f4f8; border-radius: 10px; font-weight: 600; font-size: 0.85rem; cursor: pointer; color: var(--dark); transition: all 0.3s; min-width: 100px; }
         .tab-btn.active { background: var(--teal); color: #ffffff; }
         
         .panel-section { display: none; }
         .panel-section.active { display: block; }
         label { display: block; font-weight: 600; margin: 14px 0 6px 0; font-size: 0.9rem; }
-        input, select, textarea { width: 100%; padding: 12px; border: 1px solid rgba(33,58,75,0.2); border-radius: 8px; box-sizing: border-box; font-family: inherit; font-size: 0.9rem; }
-        button.submit-btn { width: 100%; background: var(--dark); color: #ffffff; border: none; padding: 14px; border-radius: 10px; font-weight: 700; font-size: 1rem; cursor: pointer; margin-top: 20px; transition: background 0.2s; }
+        input, select, textarea { width: 100%; padding: 12px; border: 1px solid rgba(33,58,75,0.2); border-radius: 8px; box-sizing: border-box; font-family: inherit; font-size: 0.9rem; margin-bottom: 15px; }
+        
+        /* Ajustes visuales para integrar Quill */
+        .ql-toolbar.ql-snow { border-radius: 8px 8px 0 0; border-color: rgba(33,58,75,0.2); font-family: inherit; }
+        .ql-container.ql-snow { border-radius: 0 0 8px 8px; border-color: rgba(33,58,75,0.2); font-family: inherit; font-size: 0.95rem; margin-bottom: 15px; }
+        .ql-editor { min-height: 200px; }
+        .editor-summary .ql-editor { min-height: 80px; } 
+
+        button.submit-btn { width: 100%; background: var(--dark); color: #ffffff; border: none; padding: 14px; border-radius: 10px; font-weight: 700; font-size: 1rem; cursor: pointer; margin-top: 10px; transition: background 0.2s; }
         button.submit-btn:hover { background: var(--teal); }
+        .btn-cancel { background: #6c757d; margin-top: 10px; }
+        .btn-cancel:hover { background: #5a6268; }
+
         .status-msg { margin-top: 15px; padding: 12px; border-radius: 8px; text-align: center; font-weight: 600; display: none; }
         
         .news-item { display: flex; justify-content: space-between; align-items: center; padding: 15px; border: 1px solid #e2e8f0; border-radius: 10px; margin-bottom: 10px; background: #fafafa; transition: opacity 0.3s, transform 0.3s; }
-        .news-item-info { flex: 1; padding-right: 15px; }
-        .news-item-title { font-weight: 700; font-size: 0.95rem; color: #213a4b; margin-bottom: 4px; }
+        .news-item-info { flex: 1; padding-right: 15px; overflow: hidden; }
+        .news-item-title { font-weight: 700; font-size: 0.95rem; color: #213a4b; margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .news-item-date { font-size: 0.8rem; color: #666; }
+        .news-actions { display: flex; gap: 8px; }
         .btn-delete { background: #e53e3e; color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-weight: 600; transition: background 0.2s; }
         .btn-delete:hover { background: #c53030; }
+        .btn-edit { background: var(--teal); color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-weight: 600; transition: background 0.2s; }
+        .btn-edit:hover { background: #437381; }
+
+        #login-screen { max-width: 400px; margin-top: 10vh; text-align: center; }
+        #login-error { color: #e53e3e; background: #fde8e8; padding: 10px; border-radius: 8px; font-size: 0.85rem; font-weight: 600; margin-top: 15px; display: none; }
     </style>
 </head>
 <body>
 
-    <div id="pwa-install-banner" class="install-banner">
-        <span><i class="fas fa-mobile-alt"></i> Instala este panel para usarlo como una App</span>
-        <button id="pwa-install-btn" class="install-btn-trigger">Instalar App</button>
+    <div id="login-screen" class="admin-box">
+        <h1><i class="fas fa-lock" style="color: var(--teal); margin-bottom: 10px;"></i><br>Acceso Seguro</h1>
+        <p style="margin-bottom: 25px; font-size: 0.9rem; color: #555;">Introduce tu clave administrativa para acceder al panel de control.</p>
+        
+        <form id="login-form">
+            <input type="password" id="admin-password" required placeholder="Contraseña..." style="margin-bottom: 15px; text-align: center; letter-spacing: 2px;">
+            <button type="submit" class="submit-btn" style="background-color: var(--teal);">Desbloquear Panel</button>
+        </form>
+        <div id="login-error"><i class="fas fa-exclamation-triangle"></i> Contraseña incorrecta</div>
     </div>
 
-    <div class="admin-box">
-        <h1><i class="fas fa-sliders-h"></i> Gestor de Contenidos</h1>
-        
-        <div class="tabs">
-            <button class="tab-btn active" onclick="switchTab('noticias')"><i class="fas fa-plus"></i> Publicar</button>
-            <button class="tab-btn" onclick="switchTab('borrar')"><i class="fas fa-trash"></i> Borrar</button>
-            <button class="tab-btn" onclick="switchTab('fotos')"><i class="fas fa-images"></i> Fotos web</button>
-        </div>
+    <div id="app-content"></div>
 
-        <div id="sec-noticias" class="panel-section active">
-            <form id="news-form">
-                <label>Título de la noticia</label>
-                <input type="text" id="title" required placeholder="Ej: Avances en logopedia clínica">
+    <template id="panel-template">
+        <div id="main-panel">
+            
+            <div id="pwa-install-banner" class="install-banner">
+                <span><i class="fas fa-mobile-alt"></i> Instala este panel para usarlo como una App</span>
+                <button id="pwa-install-btn" class="install-btn-trigger">Instalar App</button>
+            </div>
 
-                <label>Categoría</label>
-                <select id="category">
-                    <option value="infantil">Infantil y Aprendizaje</option>
-                    <option value="adultos">Adultos y Deglución</option>
-                    <option value="saac">Sistemas SAAC</option>
-                    <option value="consejos">Consejos en Casa</option>
-                </select>
+            <div class="admin-box">
+                <h1><i class="fas fa-sliders-h"></i> Gestor de Contenidos</h1>
+                
+                <div class="tabs">
+                    <button class="tab-btn active" onclick="switchTab('noticias')"><i class="fas fa-plus"></i> Publicar</button>
+                    <button class="tab-btn" onclick="switchTab('editar')"><i class="fas fa-edit"></i> Editar</button>
+                    <button class="tab-btn" onclick="switchTab('borrar')"><i class="fas fa-trash"></i> Borrar</button>
+                    <button class="tab-btn" onclick="switchTab('fotos')"><i class="fas fa-images"></i> Fotos web</button>
+                    <button class="tab-btn" onclick="switchTab('categorias')"><i class="fas fa-tags"></i> Categorías</button>
+                </div>
 
-                <label>Fotografía de portada</label>
-                <input type="file" id="news-file" accept="image/*" required>
+                <!-- SECCIÓN 1: PUBLICAR -->
+                <div id="sec-noticias" class="panel-section active">
+                    <form id="news-form">
+                        <label>Título de la noticia</label>
+                        <input type="text" id="title" required placeholder="Ej: Avances en logopedia clínica">
 
-                <label>Resumen corto</label>
-                <textarea id="summary" rows="2" required placeholder="Breve descripción..."></textarea>
+                        <label>Categoría</label>
+                        <select id="category" required><option value="">Cargando categorías...</option></select>
 
-                <label>Contenido completo</label>
-                <textarea id="content" rows="5" placeholder="Desarrollo del artículo..."></textarea>
+                        <label>Fotografía de portada</label>
+                        <input type="file" id="news-file" accept="image/*" required>
 
-                <label>URL Externa (Opcional)</label>
-                <input type="url" id="external-url" placeholder="https://ejemplo.com">
+                        <label>Resumen corto (Para la tarjeta)</label>
+                        <div id="summary-editor-container" class="editor-summary"></div>
 
-                <button type="submit" class="submit-btn">Publicar Artículo</button>
-            </form>
-        </div>
+                        <label>Contenido completo</label>
+                        <div id="editor-container"></div>
 
-        <div id="sec-borrar" class="panel-section">
-            <p style="font-size: 0.9rem; color: #555; margin-bottom: 15px;">Selecciona la noticia que deseas eliminar permanentemente (Se borrará también su foto del servidor).</p>
-            <div id="news-list-container">
-                <p>Cargando listado de noticias...</p>
+                        <label>URL Externa (Opcional)</label>
+                        <input type="url" id="external-url" placeholder="https://ejemplo.com">
+
+                        <button type="submit" class="submit-btn">Publicar Artículo</button>
+                    </form>
+                </div>
+
+                <!-- SECCIÓN NUEVA: EDITAR -->
+                <div id="sec-editar" class="panel-section">
+                    <div id="edit-list-container">
+                        <p>Cargando listado de noticias...</p>
+                    </div>
+
+                    <div id="edit-form-container" style="display: none;">
+                        <button type="button" onclick="cancelEdit()" class="submit-btn btn-cancel" style="margin-bottom: 20px; width: auto; padding: 8px 16px;"><i class="fas fa-arrow-left"></i> Volver a la lista</button>
+                        
+                        <form id="edit-news-form">
+                            <input type="hidden" id="edit-id">
+                            <input type="hidden" id="edit-old-image">
+                            <input type="hidden" id="edit-date">
+
+                            <label>Título de la noticia</label>
+                            <input type="text" id="edit-title" required>
+
+                            <label>Categoría</label>
+                            <select id="edit-category" required></select>
+
+                            <label>Fotografía de portada (Deja vacío para mantener la actual)</label>
+                            <input type="file" id="edit-news-file" accept="image/*">
+
+                            <label>Resumen corto (Para la tarjeta)</label>
+                            <div id="edit-summary-editor-container" class="editor-summary"></div>
+
+                            <label>Contenido completo</label>
+                            <div id="edit-editor-container"></div>
+
+                            <label>URL Externa (Opcional)</label>
+                            <input type="url" id="edit-external-url" placeholder="https://ejemplo.com">
+
+                            <button type="submit" class="submit-btn">Guardar Cambios</button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- SECCIÓN 2: BORRAR -->
+                <div id="sec-borrar" class="panel-section">
+                    <p style="font-size: 0.9rem; color: #555; margin-bottom: 15px;">Selecciona la noticia que deseas eliminar permanentemente (Se borrará también su foto del servidor).</p>
+                    <div id="news-list-container">
+                        <p>Cargando listado de noticias...</p>
+                    </div>
+                </div>
+
+                <!-- SECCIÓN 3: FOTOS -->
+                <div id="sec-fotos" class="panel-section">
+                    <form id="photo-form">
+                        <label>¿Qué foto fija de la web deseas sustituir?</label>
+                        <select id="photo-target">
+                            <option value="intervencion.png">Imagen de presentación 'Sobre mí' (intervencion.png)</option>
+                            <option value="pediatrica.png">Imagen de la tarjeta Logopedia Pediátrica (pediatrica.png)</option>
+                            <option value="aumentativos.png">Imagen de la tarjeta Sistemas SAAC (aumentativos.png)</option>
+                            <option value="asesoramiento.png">Imagen de la tarjeta Asesoramiento (asesoramiento.png)</option>
+                            <option value="mapa-intervencion.png">Imagen grande del Mapa de Ruta (mapa-intervencion.png)</option>
+                        </select>
+                        <label>Selecciona la nueva imagen (Debe ser formato PNG)</label>
+                        <input type="file" id="photo-file" accept="image/*" required>
+                        <button type="submit" class="submit-btn" style="background-color: var(--teal);">Reemplazar Fotografía</button>
+                    </form>
+                </div>
+
+                <!-- SECCIÓN 4: CATEGORÍAS -->
+                <div id="sec-categorias" class="panel-section">
+                    <p style="font-size: 0.9rem; color: #555; margin-bottom: 15px;">Añade o borra categorías para clasificar las noticias. Los cambios se reflejarán instantáneamente en la pestaña de Publicar y en la Web.</p>
+                    
+                    <form id="category-form" style="display: flex; gap: 10px; margin-bottom: 25px;">
+                        <input type="text" id="new-cat-name" placeholder="Nueva categoría (Ej: Eventos)" required style="flex: 1; margin: 0;">
+                        <button type="submit" class="submit-btn" style="margin-top: 0; width: auto; padding: 12px 20px; background-color: var(--teal);">Añadir</button>
+                    </form>
+
+                    <div id="categories-list-container">
+                        <p>Cargando categorías...</p>
+                    </div>
+                </div>
+
+                <div id="status" class="status-msg"></div>
+                
+                <div style="text-align: center; margin-top: 30px;">
+                    <button onclick="logout()" style="background: none; border: none; color: #e53e3e; font-weight: 600; font-family: inherit; cursor: pointer; text-decoration: underline;"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</button>
+                </div>
             </div>
         </div>
+    </template>
 
-        <div id="sec-fotos" class="panel-section">
-            <form id="photo-form">
-                <label>¿Qué foto fija de la web deseas sustituir?</label>
-                <select id="photo-target">
-                    <option value="intervencion.png">Imagen de presentación 'Sobre mí' (intervencion.png)</option>
-                    <option value="pediatrica.png">Imagen de la tarjeta Logopedia Pediátrica (pediatrica.png)</option>
-                    <option value="aumentativos.png">Imagen de la tarjeta Sistemas SAAC (aumentativos.png)</option>
-                    <option value="asesoramiento.png">Imagen de la tarjeta Asesoramiento (asesoramiento.png)</option>
-                    <option value="mapa-intervencion.png">Imagen grande del Mapa de Ruta (mapa-intervencion.png)</option>
-                </select>
-
-                <label>Selecciona la nueva imagen (Debe ser formato PNG)</label>
-                <input type="file" id="photo-file" accept="image/png" required>
-
-                <button type="submit" class="submit-btn" style="background-color: var(--teal);">Reemplazar Fotografía</button>
-            </form>
-        </div>
-
-        <div id="status" class="status-msg"></div>
-    </div>
-
+    <script src="https://cdn.quilljs.com/1.3.7/quill.min.js"></script>
     <script>
         const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzlAQXbX3TtvgSTtfHl49R3BrpfL53Khk_ubOgtmLXTZEQ-tbmZWOkC0dOJ2aUSyOmcuA/exec';
-        const PHP_TOKEN = 'MiClaveSecreta123*'; 
+        let PHP_TOKEN = ''; 
+        let newsCategories = []; 
+        let currentNewsData = []; // Guardará las noticias en memoria para poder editarlas
+        let deferredPrompt; 
+        
+        // Variables globales para los editores Quill
+        let quillSummary, quillContent, quillEditSummary, quillEditContent;
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e; 
+            const installBanner = document.getElementById('pwa-install-banner');
+            if(installBanner) installBanner.style.display = 'block'; 
+        });
+
+        // ==========================================
+        // COMPRESIÓN DE IMÁGENES
+        // ==========================================
+        async function compressImage(file, maxWidth = 1000, quality = 0.8) {
+            return new Promise((resolve) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = (event) => {
+                    const img = new Image();
+                    img.src = event.target.result;
+                    img.onload = () => {
+                        let width = img.width;
+                        let height = img.height;
+
+                        if (width > maxWidth) {
+                            height = Math.round((height * maxWidth) / width);
+                            width = maxWidth;
+                        }
+
+                        const canvas = document.createElement('canvas');
+                        canvas.width = width;
+                        canvas.height = height;
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0, width, height);
+
+                        const mimeType = file.type === 'image/png' ? 'image/png' : 'image/jpeg';
+                        
+                        canvas.toBlob((blob) => {
+                            const compressedFile = new File([blob], file.name, {
+                                type: mimeType,
+                                lastModified: Date.now()
+                            });
+                            resolve(compressedFile);
+                        }, mimeType, quality);
+                    };
+                };
+            });
+        }
+
+        function showStatus(msg, isSuccess) {
+            const el = document.getElementById('status');
+            if(!el) return;
+            el.innerText = msg;
+            el.style.display = 'block';
+            el.style.backgroundColor = isSuccess ? '#def7ec' : '#fde8e8';
+            el.style.color = isSuccess ? '#03543f' : '#9b1c1c';
+            setTimeout(() => { el.style.display = 'none'; }, 6000);
+        }
+
+        function notifyOtherTabs() {
+            if ('BroadcastChannel' in window) {
+                const syncChannel = new BroadcastChannel('logopedia_sync');
+                syncChannel.postMessage('refresh');
+            }
+        }
 
         function switchTab(type) {
             document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -121,124 +282,207 @@
             if(type === 'noticias') {
                 document.querySelectorAll('.tab-btn')[0].classList.add('active');
                 document.getElementById('sec-noticias').classList.add('active');
-            } else if (type === 'borrar') {
+            } else if (type === 'editar') {
                 document.querySelectorAll('.tab-btn')[1].classList.add('active');
-                document.getElementById('sec-borrar').classList.add('active');
-                loadNewsToDelete(); 
-            } else {
+                document.getElementById('sec-editar').classList.add('active');
+                cancelEdit(); // Aseguramos que se muestre la lista y no el formulario
+                loadNewsList(); 
+            } else if (type === 'borrar') {
                 document.querySelectorAll('.tab-btn')[2].classList.add('active');
+                document.getElementById('sec-borrar').classList.add('active');
+                loadNewsList(); 
+            } else if (type === 'fotos') {
+                document.querySelectorAll('.tab-btn')[3].classList.add('active');
                 document.getElementById('sec-fotos').classList.add('active');
+            } else if (type === 'categorias') {
+                document.querySelectorAll('.tab-btn')[4].classList.add('active');
+                document.getElementById('sec-categorias').classList.add('active');
             }
         }
 
-        function showStatus(msg, isSuccess) {
-            const el = document.getElementById('status');
-            el.innerText = msg;
-            el.style.display = 'block';
-            el.style.backgroundColor = isSuccess ? '#def7ec' : '#fde8e8';
-            el.style.color = isSuccess ? '#03543f' : '#9b1c1c';
-            setTimeout(() => { el.style.display = 'none'; }, 6000);
-        }
-
-        // Emite el aviso para que la web pública se actualice sola
-        function notifyOtherTabs() {
-            if ('BroadcastChannel' in window) {
-                const syncChannel = new BroadcastChannel('logopedia_sync');
-                syncChannel.postMessage('refresh');
-            }
-        }
-
-        let deferredPrompt;
-        const installBanner = document.getElementById('pwa-install-banner');
-        const installBtn = document.getElementById('pwa-install-btn');
-
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault();
-            deferredPrompt = e; 
-            installBanner.style.display = 'block'; 
-        });
-
-        installBtn.addEventListener('click', async () => {
-            if (!deferredPrompt) return;
-            deferredPrompt.prompt(); 
-            const { outcome } = await deferredPrompt.userChoice;
-            if (outcome === 'accepted') { installBanner.style.display = 'none'; }
-            deferredPrompt = null;
-        });
-
-        document.getElementById('news-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            showStatus('Procesando fotografía y conectando con base de datos...', true);
-
-            const newsFile = document.getElementById('news-file').files[0];
-            const imgData = new FormData();
-            imgData.append('imagen', newsFile);
-
-            fetch('upload.php', { method: 'POST', headers: { 'X-Auth-Token': PHP_TOKEN }, body: imgData })
+        // ==========================================
+        // GESTIÓN DE CATEGORÍAS
+        // ==========================================
+        function loadCategories() {
+            fetch('manage_categories.php?t=' + new Date().getTime())
             .then(res => res.json())
-            .then(uploadResult => {
-                if(uploadResult.status !== 'success') throw new Error(uploadResult.message);
-                
-                const payload = {
-                    action: 'insert',
-                    id: Date.now(),
-                    categoria: document.getElementById('category').value,
-                    titulo: document.getElementById('title').value,
-                    fecha: new Date().toLocaleDateString('es-ES'),
-                    imagen: uploadResult.filename,
-                    resumen: document.getElementById('summary').value,
-                    contenido: document.getElementById('content').value,
-                    url_externa: document.getElementById('external-url').value
-                };
-
-                return fetch(GOOGLE_SCRIPT_URL, {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-                    body: JSON.stringify(payload)
-                });
+            .then(data => {
+                newsCategories = data;
+                renderCategoriesAdmin();
+                updateCategoryDropdown();
             })
-            .then(() => {
-                showStatus('¡Noticia publicada con éxito en tu web!', true);
-                document.getElementById('news-form').reset();
-                setTimeout(loadNewsToDelete, 1000); // Mantiene limpia la pestaña de borrado
-                notifyOtherTabs(); // Dispara la recarga mágica de la web
-            })
-            .catch(err => { showStatus('Fallo en el proceso: ' + err.message, false); });
-        });
+            .catch(err => console.error("Error cargando categorías:", err));
+        }
 
-        function loadNewsToDelete() {
-            const container = document.getElementById('news-list-container');
-            container.innerHTML = '<p>Conectando con la base de datos...</p>';
+        function renderCategoriesAdmin() {
+            const container = document.getElementById('categories-list-container');
+            if(!container) return;
+            container.innerHTML = '';
+            if (newsCategories.length === 0) {
+                container.innerHTML = '<p>No hay categorías registradas.</p>';
+                return;
+            }
+            newsCategories.forEach((cat, index) => {
+                container.innerHTML += `
+                    <div class="news-item">
+                        <div class="news-item-info">
+                            <div class="news-item-title">${cat.name}</div>
+                            <div class="news-item-date">Etiqueta interna: ${cat.id}</div>
+                        </div>
+                        <button onclick="deleteCategory(${index})" class="btn-delete"><i class="fas fa-trash"></i></button>
+                    </div>
+                `;
+            });
+        }
+
+        function updateCategoryDropdown() {
+            const select = document.getElementById('category');
+            const selectEdit = document.getElementById('edit-category');
+            if(select) select.innerHTML = '';
+            if(selectEdit) selectEdit.innerHTML = '';
+            
+            newsCategories.forEach(cat => {
+                const opt = `<option value="${cat.id}">${cat.name}</option>`;
+                if(select) select.innerHTML += opt;
+                if(selectEdit) selectEdit.innerHTML += opt;
+            });
+        }
+
+        window.deleteCategory = function(index) {
+            if(!confirm("¿Seguro que deseas borrar esta categoría?")) return;
+            newsCategories.splice(index, 1);
+            saveCategories();
+        };
+
+        function saveCategories() {
+            showStatus('Guardando cambios...', true);
+            fetch('manage_categories.php', {
+                method: 'POST',
+                headers: { 'X-Auth-Token': PHP_TOKEN, 'Content-Type': 'application/json' },
+                body: JSON.stringify(newsCategories)
+            })
+            .then(res => {
+                if (res.status === 403) throw new Error("Acceso denegado");
+                return res.json();
+            })
+            .then(data => {
+                showStatus(data.message, true);
+                renderCategoriesAdmin();
+                updateCategoryDropdown();
+                notifyOtherTabs();
+            })
+            .catch(err => showStatus("Error: " + err.message, false));
+        }
+
+        // ==========================================
+        // CARGAR NOTICIAS (PARA EDITAR Y BORRAR)
+        // ==========================================
+        function loadNewsList() {
+            const containerDelete = document.getElementById('news-list-container');
+            const containerEdit = document.getElementById('edit-list-container');
+            
+            if(containerDelete) containerDelete.innerHTML = '<p>Conectando con la base de datos...</p>';
+            if(containerEdit) containerEdit.innerHTML = '<p>Conectando con la base de datos...</p>';
             
             fetch(GOOGLE_SCRIPT_URL + '?t=' + new Date().getTime()) 
             .then(res => res.json())
             .then(data => {
-                container.innerHTML = '';
+                currentNewsData = data; // Guardamos en memoria
+                
+                if(containerDelete) containerDelete.innerHTML = '';
+                if(containerEdit) containerEdit.innerHTML = '';
+                
                 if(data.length === 0) {
-                    container.innerHTML = '<p>No hay noticias publicadas actualmente.</p>';
+                    const msg = '<p>No hay noticias publicadas actualmente.</p>';
+                    if(containerDelete) containerDelete.innerHTML = msg;
+                    if(containerEdit) containerEdit.innerHTML = msg;
                     return;
                 }
                 
                 data.reverse().forEach(article => {
                     const safeImageName = article.imagen ? article.imagen.trim() : '';
-                    container.innerHTML += `
-                        <div class="news-item" id="row-${article.id}">
-                            <div class="news-item-info">
-                                <div class="news-item-title">${article.titulo}</div>
-                                <div class="news-item-date">${article.fecha} | Categoría: ${article.categoria}</div>
+                    let fechaMostrada = article.fecha;
+                    if (article.fecha) {
+                        const dateObj = new Date(article.fecha);
+                        if (!isNaN(dateObj.getTime())) {
+                            fechaMostrada = dateObj.toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' });
+                        }
+                    }
+
+                    // Fila para BORRAR
+                    if(containerDelete) {
+                        containerDelete.innerHTML += `
+                            <div class="news-item" id="row-del-${article.id}">
+                                <div class="news-item-info">
+                                    <div class="news-item-title">${article.titulo}</div>
+                                    <div class="news-item-date">${fechaMostrada} | Categoría: ${article.categoria}</div>
+                                </div>
+                                <div class="news-actions">
+                                    <button onclick="deleteArticle('${article.id}', '${safeImageName}')" class="btn-delete"><i class="fas fa-trash"></i></button>
+                                </div>
                             </div>
-                            <button onclick="deleteArticle('${article.id}', '${safeImageName}')" class="btn-delete"><i class="fas fa-trash"></i></button>
-                        </div>
-                    `;
+                        `;
+                    }
+                    
+                    // Fila para EDITAR
+                    if(containerEdit) {
+                        containerEdit.innerHTML += `
+                            <div class="news-item" id="row-edit-${article.id}">
+                                <div class="news-item-info">
+                                    <div class="news-item-title">${article.titulo}</div>
+                                    <div class="news-item-date">${fechaMostrada} | Categoría: ${article.categoria}</div>
+                                </div>
+                                <div class="news-actions">
+                                    <button onclick="openEditForm('${article.id}')" class="btn-edit"><i class="fas fa-edit"></i> Editar</button>
+                                </div>
+                            </div>
+                        `;
+                    }
                 });
-            }).catch(() => container.innerHTML = '<p style="color:red;">Error al cargar las noticias.</p>');
+            }).catch(() => {
+                const msg = '<p style="color:red;">Error al cargar las noticias.</p>';
+                if(containerDelete) containerDelete.innerHTML = msg;
+                if(containerEdit) containerEdit.innerHTML = msg;
+            });
         }
+
+        // ==========================================
+        // LÓGICA DE EDICIÓN
+        // ==========================================
+        window.openEditForm = function(id) {
+            // Buscamos el artículo en la memoria
+            const article = currentNewsData.find(a => a.id == id);
+            if(!article) return;
+
+            // Rellenar formulario
+            document.getElementById('edit-id').value = article.id;
+            document.getElementById('edit-old-image').value = article.imagen;
+            document.getElementById('edit-date').value = article.fecha;
+            document.getElementById('edit-title').value = article.titulo;
+            document.getElementById('edit-category').value = article.categoria;
+            document.getElementById('edit-external-url').value = article.url_externa || '';
+            document.getElementById('edit-news-file').value = ''; // Limpiamos el input file
+            
+            // Rellenar editores Quill
+            quillEditSummary.root.innerHTML = article.resumen || '';
+            quillEditContent.root.innerHTML = article.contenido || '';
+
+            // Mostrar formulario y ocultar lista
+            document.getElementById('edit-list-container').style.display = 'none';
+            document.getElementById('edit-form-container').style.display = 'block';
+        };
+
+        window.cancelEdit = function() {
+            document.getElementById('edit-list-container').style.display = 'block';
+            document.getElementById('edit-form-container').style.display = 'none';
+        };
+
 
         window.deleteArticle = function(id, filename) {
             if(!confirm('¿Estás seguro de que deseas borrar esta noticia y su foto? No podrás recuperarla.')) return;
             
-            const rowElement = document.getElementById('row-' + id);
+            const rowDel = document.getElementById('row-del-' + id);
+            const rowEdit = document.getElementById('row-edit-' + id);
             showStatus('Borrando noticia e imagen...', true);
 
             const requestGoogle = fetch(GOOGLE_SCRIPT_URL, {
@@ -250,44 +494,281 @@
 
             const requestServer = fetch('delete_image.php', {
                 method: 'POST',
-                headers: { 
-                    'X-Auth-Token': PHP_TOKEN,
-                    'Content-Type': 'application/json'
-                },
+                headers: { 'X-Auth-Token': PHP_TOKEN, 'Content-Type': 'application/json' },
                 body: JSON.stringify({ filename: filename })
             });
 
             Promise.all([requestGoogle, requestServer])
             .then(() => {
-                rowElement.style.transform = 'scale(0.9)';
-                rowElement.style.opacity = '0';
-                setTimeout(() => rowElement.remove(), 300); 
+                if(rowDel) { rowDel.style.transform = 'scale(0.9)'; rowDel.style.opacity = '0'; setTimeout(() => rowDel.remove(), 300); }
+                if(rowEdit) { rowEdit.style.transform = 'scale(0.9)'; rowEdit.style.opacity = '0'; setTimeout(() => rowEdit.remove(), 300); }
                 showStatus('Noticia e imagen eliminadas correctamente', true);
-                notifyOtherTabs(); // Dispara la recarga mágica de la web
+                notifyOtherTabs(); 
             }).catch(() => {
                 showStatus('Fallo de conexión al intentar borrar', false);
             });
         };
 
-        document.getElementById('photo-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const fileInput = document.getElementById('photo-file');
-            const target = document.getElementById('photo-target').value;
-            if(fileInput.files.length === 0) return;
-            const formData = new FormData();
-            formData.append('imagen', fileInput.files[0]);
-            formData.append('target', target);
+        // ==========================================
+        // INICIALIZADOR DEL PANEL
+        // ==========================================
+        function initializePanel() {
+            
+            // 0. Inicializamos los Editores Quill (Publicar y Editar)
+            quillSummary = new Quill('#summary-editor-container', {
+                theme: 'snow', placeholder: 'Breve descripción para la tarjeta...',
+                modules: { toolbar: [['bold', 'italic', 'underline']] }
+            });
 
-            fetch('upload.php', { method: 'POST', headers: { 'X-Auth-Token': PHP_TOKEN }, body: formData })
-            .then(res => res.json())
-            .then(data => {
-                if(data.status === 'success') {
-                    showStatus(data.message, true);
-                    document.getElementById('photo-form').reset();
-                } else showStatus(data.message, false);
+            quillContent = new Quill('#editor-container', {
+                theme: 'snow', placeholder: 'Escribe aquí el desarrollo de la noticia...',
+                modules: { toolbar: [['bold', 'italic', 'underline'], [{ 'list': 'ordered'}, { 'list': 'bullet' }], ['link'], ['clean']] }
+            });
+
+            quillEditSummary = new Quill('#edit-summary-editor-container', {
+                theme: 'snow', placeholder: 'Breve descripción para la tarjeta...',
+                modules: { toolbar: [['bold', 'italic', 'underline']] }
+            });
+
+            quillEditContent = new Quill('#edit-editor-container', {
+                theme: 'snow', placeholder: 'Escribe aquí el desarrollo de la noticia...',
+                modules: { toolbar: [['bold', 'italic', 'underline'], [{ 'list': 'ordered'}, { 'list': 'bullet' }], ['link'], ['clean']] }
+            });
+
+            const installBanner = document.getElementById('pwa-install-banner');
+            const installBtn = document.getElementById('pwa-install-btn');
+            if (deferredPrompt && installBanner) installBanner.style.display = 'block';
+            
+            if(installBtn) {
+                installBtn.addEventListener('click', async () => {
+                    if (!deferredPrompt) return;
+                    deferredPrompt.prompt(); 
+                    const { outcome } = await deferredPrompt.userChoice;
+                    if (outcome === 'accepted') installBanner.style.display = 'none';
+                    deferredPrompt = null;
+                });
+            }
+
+            // FORMULARIO: PUBLICAR NOTICIA
+            document.getElementById('news-form').addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                const resumenText = quillSummary.getText().trim();
+                if(resumenText.length === 0) { alert("Por favor, escribe un pequeño resumen."); return; }
+
+                showStatus('Comprimiendo fotografía y conectando con base de datos...', true);
+
+                const newsFile = document.getElementById('news-file').files[0];
+                const compressedFile = await compressImage(newsFile, 1000, 0.8);
+                
+                const imgData = new FormData();
+                imgData.append('imagen', compressedFile);
+
+                fetch('upload.php', { method: 'POST', headers: { 'X-Auth-Token': PHP_TOKEN }, body: imgData })
+                .then(res => {
+                    if (res.status === 403) throw new Error("Sesión caducada");
+                    return res.json();
+                })
+                .then(uploadResult => {
+                    if(uploadResult.status !== 'success') throw new Error(uploadResult.message);
+                    
+                    const resumenHTML = quillSummary.root.innerHTML;
+                    const contenidoHTML = quillContent.root.innerHTML;
+                    
+                    const payload = {
+                        action: 'insert',
+                        id: Date.now(),
+                        categoria: document.getElementById('category').value,
+                        titulo: document.getElementById('title').value,
+                        fecha: new Date().toLocaleDateString('es-ES'),
+                        imagen: uploadResult.filename,
+                        resumen: resumenHTML === '<p><br></p>' ? '' : resumenHTML,
+                        contenido: contenidoHTML === '<p><br></p>' ? '' : contenidoHTML, 
+                        url_externa: document.getElementById('external-url').value
+                    };
+
+                    return fetch(GOOGLE_SCRIPT_URL, {
+                        method: 'POST',
+                        mode: 'no-cors',
+                        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                        body: JSON.stringify(payload)
+                    });
+                })
+                .then(() => {
+                    showStatus('¡Noticia publicada con éxito en tu web!', true);
+                    document.getElementById('news-form').reset();
+                    quillSummary.setContents([]); 
+                    quillContent.setContents([]);
+                    setTimeout(loadNewsList, 1000); 
+                    notifyOtherTabs(); 
+                })
+                .catch(err => { showStatus('Fallo en el proceso: ' + err.message, false); });
+            });
+
+            // FORMULARIO: GUARDAR EDICIÓN DE NOTICIA
+            document.getElementById('edit-news-form').addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                const resumenText = quillEditSummary.getText().trim();
+                if(resumenText.length === 0) { alert("Por favor, escribe un pequeño resumen."); return; }
+
+                showStatus('Guardando cambios en la noticia...', true);
+
+                const fileInput = document.getElementById('edit-news-file');
+                let finalImageName = document.getElementById('edit-old-image').value;
+
+                try {
+                    // Si el usuario subió una foto nueva, la comprimimos, la subimos y borramos la antigua
+                    if (fileInput.files.length > 0) {
+                        const compressedFile = await compressImage(fileInput.files[0], 1000, 0.8);
+                        const imgData = new FormData();
+                        imgData.append('imagen', compressedFile);
+
+                        const uploadRes = await fetch('upload.php', { method: 'POST', headers: { 'X-Auth-Token': PHP_TOKEN }, body: imgData }).then(r => r.json());
+                        if (uploadRes.status !== 'success') throw new Error(uploadRes.message);
+                        
+                        finalImageName = uploadRes.filename;
+
+                        // Borramos la imagen antigua de forma silenciosa
+                        fetch('delete_image.php', {
+                            method: 'POST',
+                            headers: { 'X-Auth-Token': PHP_TOKEN, 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ filename: document.getElementById('edit-old-image').value })
+                        });
+                    }
+
+                    const resumenHTML = quillEditSummary.root.innerHTML;
+                    const contenidoHTML = quillEditContent.root.innerHTML;
+
+                    const payload = {
+                        action: 'update', // Esta es la nueva acción que enviamos a Google Script
+                        id: document.getElementById('edit-id').value,
+                        categoria: document.getElementById('edit-category').value,
+                        titulo: document.getElementById('edit-title').value,
+                        fecha: document.getElementById('edit-date').value,
+                        imagen: finalImageName,
+                        resumen: resumenHTML === '<p><br></p>' ? '' : resumenHTML,
+                        contenido: contenidoHTML === '<p><br></p>' ? '' : contenidoHTML,
+                        url_externa: document.getElementById('edit-external-url').value
+                    };
+
+                    await fetch(GOOGLE_SCRIPT_URL, {
+                        method: 'POST',
+                        mode: 'no-cors',
+                        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                        body: JSON.stringify(payload)
+                    });
+
+                    showStatus('¡Noticia actualizada correctamente!', true);
+                    cancelEdit(); // Volvemos a la lista
+                    setTimeout(loadNewsList, 1000); // Recargamos las listas
+                    notifyOtherTabs();
+
+                } catch (err) {
+                    showStatus('Fallo al actualizar: ' + err.message, false);
+                }
+            });
+
+            // FORMULARIO: CREAR CATEGORÍAS
+            document.getElementById('category-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const input = document.getElementById('new-cat-name');
+                const name = input.value.trim();
+                if (!name) return;
+                
+                const id = name.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\s+/g, '-').replace(/[^a-z0-9\-]/g, '');
+                
+                if (newsCategories.find(c => c.id === id)) {
+                    alert("Esta categoría ya existe.");
+                    return;
+                }
+
+                newsCategories.push({ id: id, name: name });
+                saveCategories();
+                input.value = '';
+            });
+
+            // FORMULARIO: SUSTITUIR FOTOS FIJAS
+            document.getElementById('photo-form').addEventListener('submit', async function(e) {
+                e.preventDefault();
+                const fileInput = document.getElementById('photo-file');
+                const target = document.getElementById('photo-target').value;
+                if(fileInput.files.length === 0) return;
+                
+                showStatus('Optimizando y subiendo fotografía fija...', true);
+                const compressedFile = await compressImage(fileInput.files[0], 1200, 0.9);
+
+                const formData = new FormData();
+                formData.append('imagen', compressedFile);
+                formData.append('target', target);
+
+                fetch('upload.php', { method: 'POST', headers: { 'X-Auth-Token': PHP_TOKEN }, body: formData })
+                .then(res => {
+                    if (res.status === 403) throw new Error("Sesión caducada");
+                    return res.json();
+                })
+                .then(data => {
+                    if(data.status === 'success') {
+                        showStatus(data.message, true);
+                        document.getElementById('photo-form').reset();
+                    } else showStatus(data.message, false);
+                })
+                .catch(err => showStatus(err.message || 'Error de conexión', false));
+            });
+        }
+
+        // ==========================================
+        // SISTEMA DE LOGIN Y SESIÓN
+        // ==========================================
+        document.getElementById('login-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const pwdInput = document.getElementById('admin-password').value;
+            const btn = this.querySelector('button');
+            btn.innerText = 'Verificando...';
+
+            fetch('delete_image.php', {
+                method: 'POST',
+                headers: { 'X-Auth-Token': pwdInput, 'Content-Type': 'application/json' },
+                body: JSON.stringify({ filename: 'ping_login' })
             })
-            .catch(() => showStatus('Error al conectar con el servidor', false));
+            .then(res => {
+                if (res.status === 403) {
+                    document.getElementById('login-error').style.display = 'block';
+                    btn.innerText = 'Desbloquear Panel';
+                } else {
+                    PHP_TOKEN = pwdInput;
+                    sessionStorage.setItem('admin_token', pwdInput);
+                    unlockPanel();
+                }
+            })
+            .catch(() => { alert("Error de conexión"); btn.innerText = 'Desbloquear Panel'; });
         });
+
+        function unlockPanel() {
+            document.getElementById('login-screen').style.display = 'none';
+            const appContent = document.getElementById('app-content');
+            
+            if (appContent.innerHTML.trim() === '') {
+                const template = document.getElementById('panel-template');
+                appContent.appendChild(template.content.cloneNode(true));
+                initializePanel(); 
+            }
+            
+            document.getElementById('admin-password').value = '';
+            loadCategories(); 
+        }
+
+        window.logout = function() {
+            sessionStorage.removeItem('admin_token');
+            PHP_TOKEN = '';
+            document.getElementById('app-content').innerHTML = ''; 
+            document.getElementById('login-screen').style.display = 'block';
+        }
+
+        if (sessionStorage.getItem('admin_token')) {
+            PHP_TOKEN = sessionStorage.getItem('admin_token');
+            unlockPanel();
+        }
 
         if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js');
     </script>
